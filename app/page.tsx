@@ -60,7 +60,7 @@ export default function Home() {
           priority
         />
         <h1 className="text-2xl font-bold">Contact Form</h1>
-        <Form {...form} className="w-full">
+        <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
             <div className="flex flex-col gap-4">
               <FormField
