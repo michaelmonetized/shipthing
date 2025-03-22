@@ -1,9 +1,53 @@
+"use client";
 import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+
 import { SignedIn, SignedOut, SignIn, UserButton } from "@clerk/nextjs";
+
 import Image from "next/image";
 import Link from "next/link";
 
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const contactSchema = z.object({
+  name: z.string().min(1, { message: "Name is required" }),
+  phone: z
+    .string()
+    .min(10, { message: "10 digit phone number is required" })
+    .max(10, { message: "10 digit phone number is required" }),
+  email: z.string().email({ message: "Invalid email address" }).min(1, {
+    message: "Email is required",
+  }),
+  message: z.string().optional(),
+});
+
 export default function Home() {
+  const form = useForm<z.infer<typeof contactSchema>>({
+    resolver: zodResolver(contactSchema),
+    defaultValues: {
+      name: "",
+      phone: "",
+      email: "",
+      message: "",
+    },
+  });
+
+  function onSubmit(values: z.infer<typeof contactSchema>) {
+    console.log(values);
+  }
+
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
@@ -15,19 +59,77 @@ export default function Home() {
           height={38}
           priority
         />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
+        <h1 className="text-2xl font-bold">Contact Form</h1>
+        <Form {...form} className="w-full">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
+            <div className="flex flex-col gap-4">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="John Doe" />
+                    </FormControl>
+                    <FormDescription>Your first and last name.</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="phone"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Phone</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="1234567890" />
+                    </FormControl>
+                    <FormDescription>Your phone number.</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="john.doe@example.com" />
+                    </FormControl>
+                    <FormDescription>Your email address.</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="message"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Message</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        {...field}
+                        placeholder="Hello, I'm interested in your services."
+                      />
+                    </FormControl>
+                    <FormDescription>Your message to us.</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="flex justify-end p-4">
+              <Button type="submit" className="text-3xl">
+                Send
+              </Button>
+            </div>
+          </form>
+        </Form>
         <div className="flex gap-4 items-center flex-col sm:flex-row">
           <SignedOut>
             <SignIn routing="hash" />
