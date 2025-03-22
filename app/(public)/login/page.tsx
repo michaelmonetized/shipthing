@@ -1,5 +1,14 @@
-import { SignIn } from "@clerk/nextjs";
+import { SignedIn, SignedOut, SignIn, UserButton } from "@clerk/nextjs";
 
 export default function LoginPage() {
-  return <SignIn />;
+  return (
+    <>
+      <SignedOut>
+        <SignIn routing="hash" />
+      </SignedOut>
+      <SignedIn>
+        <UserButton />
+      </SignedIn>
+    </>
+  );
 }
