@@ -11,6 +11,7 @@
   "dependencies": {
     "@clerk/nextjs": "^6.12.8",
     "@clerk/themes": "^2.2.23",
+    "@radix-ui/react-slot": "^1.1.2",
     "@react-email/components": "^0.0.34",
     "@sentry/nextjs": "^9",
     "class-variance-authority": "^0.7.1",
