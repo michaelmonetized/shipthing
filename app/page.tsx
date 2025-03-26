@@ -103,7 +103,7 @@ export default function Home() {
 
     fetch("/api/send", {
       method: "POST",
-      body: JSON.stringify(contact),
+      body: JSON.stringify({ contact }),
     });
 
     setNewContact(contact);
