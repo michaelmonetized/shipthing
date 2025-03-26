@@ -32,8 +32,8 @@ import {
   TableHead,
   TableBody,
 } from "@/components/ui/table";
-import { cn } from "@/lib/utils";
-import { Table } from "lucide-react";
+
+import { Table } from "@/components/ui/table";
 import { useState } from "react";
 import { contactSchema, contactType } from "@/convex/contacts";
 
@@ -57,64 +57,10 @@ export default function Home() {
     props: {},
   });
 
-  const form = useForm<contactType>({
-    resolver: zodResolver(contactSchema),
-    defaultValues: {
-      name: "",
-      phone: "",
-      email: "",
-      message: "",
-      page: "Home",
-    },
-  });
-
-  const createContact = useMutation(api.contacts.create);
-  function onSubmit(contact: contactType) {
-    const created = createContact(contact);
-
-    setNewContact(contact);
-
-    setAlertParams({
-      title: "Success",
-      description: `Contact ${newContact.name} added successfully`,
-      props: {
-        variant: "default",
-      },
-    });
-
-    // display a shadcn alert with a success message
-    setOpen(true);
-    setTimeout(() => {
-      setOpen(false);
-    }, 3000);
-
-    form.reset();
-
-    return created;
-  }
-
-  const contacts = useQuery(api.contacts.get);
-  const deleteContact = useMutation(api.contacts.del);
-
-  async function onDeleteContact(id: string) {
-    const name = contacts?.find((contact) => contact._id === id)?.name;
-
-    setAlertParams({
-      title: "Are you sure?",
-      description: (
-        <>
-          Are you sure you want to delete contact <b>{name}</b>?{" "}
-          <Button variant="destructive" onClick={() => deleteContact({ id })}>
-            Delete
-          </Button>
-        </>
-      ),
-      props: {
-        variant: "destructive",
-      },
-    });
-    setOpen(true);
-  }
+  const getContacts = useQuery(api.contacts.get);
+  const contacts = getContacts?.sort(
+    (a, b) => b._creationTime - a._creationTime
+  );
 
   const contactList = () => {
     return contacts?.map(
@@ -140,14 +86,79 @@ export default function Home() {
     );
   };
 
+  const form = useForm<contactType>({
+    resolver: zodResolver(contactSchema),
+    defaultValues: {
+      name: "",
+      phone: "",
+      email: "",
+      message: "",
+      page: "Home",
+    },
+  });
+
+  const createContact = useMutation(api.contacts.create);
+  function onSubmit(contact: contactType) {
+    createContact(contact);
+
+    setNewContact(contact);
+
+    setAlertParams({
+      title: "Success",
+      description: `Contact ${newContact.name} added successfully`,
+      props: {
+        variant: "default",
+      },
+    });
+
+    // display a shadcn alert with a success message
+    setOpen(true);
+    setTimeout(() => {
+      setOpen(false);
+    }, 3000);
+
+    form.reset();
+  }
+
+  const deleteContact = useMutation(api.contacts.del);
+
+  async function onDeleteContact(id: string) {
+    const name = contacts?.find((contact) => contact._id === id)?.name;
+
+    setAlertParams({
+      title: "Are you sure?",
+      description: (
+        <>
+          Are you sure you want to delete contact <b>{name}</b>?{" "}
+          <Button
+            variant="destructive"
+            onClick={() => {
+              deleteContact({ id });
+
+              setOpen(false);
+            }}
+          >
+            Delete
+          </Button>
+        </>
+      ),
+      props: {
+        variant: "destructive",
+      },
+    });
+    setOpen(true);
+  }
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+    <div className="flex flex-col gap-4 items-center min-h-screen font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-4 items-center">
-        <Alert {...alertParams.props} className={cn(open ? "grid" : "hidden")}>
-          <AlertTitle>{alertParams.title}</AlertTitle>
-          <AlertDescription>{alertParams.description}</AlertDescription>
-        </Alert>
-        {contactList && (
+        {open && (
+          <Alert {...alertParams.props}>
+            <AlertTitle>{alertParams.title}</AlertTitle>
+            <AlertDescription>{alertParams.description}</AlertDescription>
+          </Alert>
+        )}
+        {(contacts?.length || 0) > 0 ? (
           <div className="flex flex-col gap-4 items-center">
             <h1 className="text-2xl font-bold">Contacts</h1>
             <Table>
@@ -165,9 +176,13 @@ export default function Home() {
               <TableBody>{contactList()}</TableBody>
             </Table>
           </div>
+        ) : (
+          <div className="flex flex-col gap-4 items-center">
+            <h1 className="text-2xl font-bold">Be the first to contact us!</h1>
+          </div>
         )}
         <div className="flex flex-col gap-4 items-center">
-          <h1 className="text-2xl font-bold">Contact Form</h1>
+          <h2 className="text-2xl font-bold">Send Message</h2>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
               <div className="flex flex-col gap-4">
