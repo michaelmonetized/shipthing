@@ -101,6 +101,11 @@ export default function Home() {
   function onSubmit(contact: contactType) {
     createContact(contact);
 
+    fetch("/api/send", {
+      method: "POST",
+      body: JSON.stringify(contact),
+    });
+
     setNewContact(contact);
 
     setAlertParams({
