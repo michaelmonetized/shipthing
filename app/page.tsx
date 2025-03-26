@@ -1,4 +1,5 @@
 "use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -18,118 +19,233 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-const contactSchema = z.object({
-  name: z.string().min(1, { message: "Name is required" }),
-  phone: z
-    .string()
-    .min(10, { message: "10 digit phone number is required" })
-    .max(10, { message: "10 digit phone number is required" }),
-  email: z.string().email({ message: "Invalid email address" }).min(1, {
-    message: "Email is required",
-  }),
-  message: z.string().optional(),
-});
+import { useQuery, useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import {
+  TableRow,
+  TableCell,
+  TableHeader,
+  TableHead,
+  TableBody,
+} from "@/components/ui/table";
+import { cn } from "@/lib/utils";
+import { Table } from "lucide-react";
+import { useState } from "react";
+import { contactSchema, contactType } from "@/convex/contacts";
 
 export default function Home() {
-  const form = useForm<z.infer<typeof contactSchema>>({
+  const [open, setOpen] = useState(false);
+  const [newContact, setNewContact] = useState<contactType>({
+    name: "",
+    phone: "",
+    email: "",
+    message: "",
+    page: "Home",
+  });
+
+  const [alertParams, setAlertParams] = useState<{
+    title: string;
+    description: string | React.ReactNode;
+    props: React.ComponentProps<typeof Alert>;
+  }>({
+    title: "",
+    description: <></>,
+    props: {},
+  });
+
+  const form = useForm<contactType>({
     resolver: zodResolver(contactSchema),
     defaultValues: {
       name: "",
       phone: "",
       email: "",
       message: "",
+      page: "Home",
     },
   });
 
-  function onSubmit(values: z.infer<typeof contactSchema>) {
-    console.log(values);
+  const createContact = useMutation(api.contacts.create);
+  function onSubmit(contact: contactType) {
+    const created = createContact(contact);
+
+    setNewContact(contact);
+
+    setAlertParams({
+      title: "Success",
+      description: `Contact ${newContact.name} added successfully`,
+      props: {
+        variant: "default",
+      },
+    });
+
+    // display a shadcn alert with a success message
+    setOpen(true);
+    setTimeout(() => {
+      setOpen(false);
+    }, 3000);
+
+    form.reset();
+
+    return created;
   }
+
+  const contacts = useQuery(api.contacts.get);
+  const deleteContact = useMutation(api.contacts.del);
+
+  async function onDeleteContact(id: string) {
+    const name = contacts?.find((contact) => contact._id === id)?.name;
+
+    setAlertParams({
+      title: "Are you sure?",
+      description: (
+        <>
+          Are you sure you want to delete contact <b>{name}</b>?{" "}
+          <Button variant="destructive" onClick={() => deleteContact({ id })}>
+            Delete
+          </Button>
+        </>
+      ),
+      props: {
+        variant: "destructive",
+      },
+    });
+    setOpen(true);
+  }
+
+  const contactList = () => {
+    return contacts?.map(
+      (contact) =>
+        typeof contact._id === "string" && (
+          <TableRow key={contact._id}>
+            <TableCell>{contact.name}</TableCell>
+            <TableCell>{contact.phone}</TableCell>
+            <TableCell>{contact.email}</TableCell>
+            <TableCell>{contact.message}</TableCell>
+            <TableCell>{contact._creationTime}</TableCell>
+            <TableCell>{contact.page}</TableCell>
+            <TableCell>
+              <Button
+                variant="destructive"
+                onClick={() => onDeleteContact(contact._id)}
+              >
+                Delete
+              </Button>
+            </TableCell>
+          </TableRow>
+        )
+    );
+  };
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <h1 className="text-2xl font-bold">Contact Form</h1>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
-            <div className="flex flex-col gap-4">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Name</FormLabel>
-                    <FormControl>
-                      <Input {...field} placeholder="John Doe" />
-                    </FormControl>
-                    <FormDescription>Your first and last name.</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="phone"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Phone</FormLabel>
-                    <FormControl>
-                      <Input {...field} placeholder="1234567890" />
-                    </FormControl>
-                    <FormDescription>Your phone number.</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input {...field} placeholder="john.doe@example.com" />
-                    </FormControl>
-                    <FormDescription>Your email address.</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="message"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Message</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        {...field}
-                        placeholder="Hello, I'm interested in your services."
-                      />
-                    </FormControl>
-                    <FormDescription>Your message to us.</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="flex justify-end p-4">
-              <Button type="submit" className="text-3xl">
-                Send
-              </Button>
-            </div>
-          </form>
-        </Form>
+      <main className="flex flex-col gap-4 items-center">
+        <Alert {...alertParams.props} className={cn(open ? "grid" : "hidden")}>
+          <AlertTitle>{alertParams.title}</AlertTitle>
+          <AlertDescription>{alertParams.description}</AlertDescription>
+        </Alert>
+        {contactList && (
+          <div className="flex flex-col gap-4 items-center">
+            <h1 className="text-2xl font-bold">Contacts</h1>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Phone</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Message</TableHead>
+                  <TableHead>Created</TableHead>
+                  <TableHead>Page</TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>{contactList()}</TableBody>
+            </Table>
+          </div>
+        )}
+        <div className="flex flex-col gap-4 items-center">
+          <h1 className="text-2xl font-bold">Contact Form</h1>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
+              <div className="flex flex-col gap-4">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Name</FormLabel>
+                      <FormControl>
+                        <Input type="text" {...field} placeholder="John Doe" />
+                      </FormControl>
+                      <FormDescription>
+                        Your first and last name.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Phone</FormLabel>
+                      <FormControl>
+                        <Input type="tel" {...field} placeholder="1234567890" />
+                      </FormControl>
+                      <FormDescription>Your phone number.</FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="email"
+                          {...field}
+                          placeholder="john.doe@example.com"
+                        />
+                      </FormControl>
+                      <FormDescription>Your email address.</FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="message"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Message</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          {...field}
+                          placeholder="Hello, I'm interested in your services."
+                          rows={2}
+                        />
+                      </FormControl>
+                      <FormDescription>Your message to us.</FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="flex justify-end p-4">
+                <Button type="submit" className="text-3xl">
+                  Send
+                </Button>
+              </div>
+            </form>
+          </Form>
+        </div>
         <div className="flex gap-4 items-center flex-col sm:flex-row">
           <SignedOut>
             <SignIn routing="hash" />
