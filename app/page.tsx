@@ -101,7 +101,12 @@ export default function Home() {
   function onSubmit(contact: contactType) {
     createContact(contact);
 
-    fetch("/api/send", {
+    fetch("/api/send/notification", {
+      method: "POST",
+      body: JSON.stringify({ contact }),
+    });
+
+    fetch("/api/send/confirmation", {
       method: "POST",
       body: JSON.stringify({ contact }),
     });
