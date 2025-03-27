@@ -166,8 +166,8 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col gap-4 items-center min-h-screen font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-4 items-center">
+    <div className="flex flex-col gap-4 items-center min-h-dvh w-full p-md">
+      <main className="flex flex-col gap-4 w-full">
         {open && (
           <Alert {...alertParams.props}>
             <AlertTitle>{alertParams.title}</AlertTitle>
@@ -175,29 +175,31 @@ export default function Home() {
           </Alert>
         )}
         {(contacts?.length || 0) > 0 ? (
-          <div className="flex flex-col gap-4 items-center">
-            <h1 className="text-2xl font-bold">Contacts</h1>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Phone</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Message</TableHead>
-                  <TableHead>Created</TableHead>
-                  <TableHead>Page</TableHead>
-                  <TableHead>Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>{contactList()}</TableBody>
-            </Table>
-          </div>
+          <SignedIn>
+            <div className="flex flex-col gap-4 w-full">
+              <h1 className="text-2xl font-bold">Contacts</h1>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Name</TableHead>
+                    <TableHead>Phone</TableHead>
+                    <TableHead>Email</TableHead>
+                    <TableHead>Message</TableHead>
+                    <TableHead>Created</TableHead>
+                    <TableHead>Page</TableHead>
+                    <TableHead>Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>{contactList()}</TableBody>
+              </Table>
+            </div>
+          </SignedIn>
         ) : (
-          <div className="flex flex-col gap-4 items-center">
+          <div className="flex flex-col gap-4 w-full">
             <h1 className="text-2xl font-bold">Be the first to contact us!</h1>
           </div>
         )}
-        <div className="flex flex-col gap-4 items-center">
+        <div className="flex flex-col gap-4 w-full">
           <h2 className="text-2xl font-bold">Send Message</h2>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
@@ -209,7 +211,12 @@ export default function Home() {
                     <FormItem>
                       <FormLabel>Name</FormLabel>
                       <FormControl>
-                        <Input type="text" {...field} placeholder="John Doe" />
+                        <Input
+                          type="text"
+                          {...field}
+                          placeholder="John Doe"
+                          className="w-full"
+                        />
                       </FormControl>
                       <FormDescription>
                         Your first and last name.
@@ -225,7 +232,12 @@ export default function Home() {
                     <FormItem>
                       <FormLabel>Phone</FormLabel>
                       <FormControl>
-                        <Input type="tel" {...field} placeholder="1234567890" />
+                        <Input
+                          type="tel"
+                          {...field}
+                          placeholder="1234567890"
+                          className="w-full"
+                        />
                       </FormControl>
                       <FormDescription>Your phone number.</FormDescription>
                       <FormMessage />
@@ -243,6 +255,7 @@ export default function Home() {
                           type="email"
                           {...field}
                           placeholder="john.doe@example.com"
+                          className="w-full"
                         />
                       </FormControl>
                       <FormDescription>Your email address.</FormDescription>
@@ -261,6 +274,7 @@ export default function Home() {
                           {...field}
                           placeholder="Hello, I'm interested in your services."
                           rows={2}
+                          className="w-full"
                         />
                       </FormControl>
                       <FormDescription>Your message to us.</FormDescription>
@@ -270,9 +284,7 @@ export default function Home() {
                 />
               </div>
               <div className="flex justify-end p-4">
-                <Button type="submit" className="text-3xl">
-                  Send
-                </Button>
+                <Button type="submit">Send</Button>
               </div>
             </form>
           </Form>
