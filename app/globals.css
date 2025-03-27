@@ -41,29 +41,36 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+
+  --color-Crust: var(--Crust);
+  --color-Mantle: var(--Mantle);
+  --color-Surface0: var(--Surface0);
+  --color-Surface1: var(--Surface1);
+  --color-Overlay0: var(--Overlay0);
+  --color-Overlay1: var(--Overlay1);
+  --color-Overlay2: var(--Overlay2);
+  --color-Base: var(--Base);
+  --color-Rosewater: var(--Rosewater);
+  --color-Flamingo: var(--Flamingo);
+  --color-Pink: var(--Pink);
+  --color-Mauve: var(--Mauve);
+  --color-Red: var(--Red);
+  --color-Maroon: var(--Maroon);
+  --color-Peach: var(--Peach);
+  --color-Yellow: var(--Yellow);
+  --color-Green: var(--Green);
+  --color-Teal: var(--Teal);
+  --color-Sky: var(--Sky);
+  --color-Sapphire: var(--Sapphire);
+  --color-Blue: var(--Blue);
+  --color-Lavender: var(--Lavender);
+
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 
-  /** Sizes
-    const sizes = {
-      xs: "clamp(0.66667rem, 0.6667rem + 0.3182vw, 0.881rem)",
-      sm: "clamp(0.7619rem, 0.7619rem + 0.3182vw, 1rem)",
-      md: "clamp(0.881rem, 1rem + 0.3182vw, 1.3333rem)",
-      lg: "clamp(1.1072rem, 1.3333rem + 0.3182vw, 1.6667rem)",
-      xl: "clamp(1.3333rem, 1.6667rem + 0.3182vw, 2rem)",
-      "2xl": "clamp(1.6667rem, 2rem + 0.3182vw, 2.6667rem)",
-      "3xl": "clamp(2rem, 2.6667rem + 0.3182vw, 3.3333rem)",
-      "4xl": "clamp(2.6667rem, 3.3333rem + 0.3182vw, 4rem)",
-      "5xl": "clamp(3.3333rem, 4rem + 0.3182vw, 5rem)",
-      "6xl": "clamp(4rem, 5rem + 0.3182vw, 6rem)",
-      "7xl": "clamp(5rem, 6rem + 0.3182vw, 7rem)",
-      "8xl": "clamp(6rem, 7rem + 0.3182vw, 8rem)",
-      "9xl": "clamp(7rem, 8rem + 0.3182vw, 9rem)",
-      "10xl": "clamp(8rem, 9rem + 0.3182vw, 10rem)",
-    };
-  **/
+  /** Sizes **/
   --size-xs: clamp(0.66667rem, 0.6667rem + 0.3182vw, 0.881rem);
   --size-sm: clamp(0.7619rem, 0.7619rem + 0.3182vw, 1rem);
   --size-md: clamp(0.881rem, 1rem + 0.3182vw, 1.3333rem);
@@ -114,7 +121,8 @@
 }
 
 :root {
-  /* dark by default */
+  --radius: 0.625rem;
+
   --Rosewater: hsl(10 57% 88%);
   --Flamingo: hsl(0 59% 84%);
   --Pink: hsl(316 73% 84%);
@@ -142,7 +150,6 @@
   --Mantle: hsl(231 19% 20%);
   --Crust: hsl(229 20% 17%);
 
-  --radius: 0.625rem;
   --background: var(--Crust);
   --foreground: var(--Text);
   --card: var(--Mantle);

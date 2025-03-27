@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { ConvexClientProvider } from "@/providers/convex";
-import { PostHogProvider } from "@/providers/posthog";
-import ThemeProvider from "@/providers/theme";
+import Providers from "@/providers";
 
 export const metadata: Metadata = {
   title: "Shipthing",
@@ -16,12 +14,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased">
-        <ConvexClientProvider>
-          <PostHogProvider>
-            <ThemeProvider>{children}</ThemeProvider>
-          </PostHogProvider>
-        </ConvexClientProvider>
+      <body id="top">
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
