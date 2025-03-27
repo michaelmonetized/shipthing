@@ -99,16 +99,22 @@ export default function Home() {
 
   const createContact = useMutation(api.contacts.create);
   function onSubmit(contact: contactType) {
-    createContact(contact);
+    const createdContact = createContact(contact);
+    const now = new Date().getTime();
+    let id;
+
+    createdContact.then((res) => {
+      id = res;
+    });
 
     fetch("/api/send/notification", {
       method: "POST",
-      body: JSON.stringify({ contact }),
+      body: JSON.stringify({ contact: { ...contact, created: now, id } }),
     });
 
     fetch("/api/send/confirmation", {
       method: "POST",
-      body: JSON.stringify({ contact }),
+      body: JSON.stringify({ contact: { ...contact, created: now, id } }),
     });
 
     setNewContact(contact);
