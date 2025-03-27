@@ -10,7 +10,7 @@ export async function POST(request: Request) {
   try {
     const { data, error } = await resend.emails.send({
       from: "Notifications <notify@uncap.us>",
-      to: [contact.email],
+      to: "micihaelmonetized@gmail.com",
       subject: `New Contact ${contact.name}`,
       react: notifyEmail,
     });
