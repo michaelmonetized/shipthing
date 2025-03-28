@@ -36,6 +36,7 @@ import {
 import { Table } from "@/components/ui/table";
 import { useState } from "react";
 import { contactSchema, contactType } from "@/convex/contacts";
+import { Navbar } from "@/components/ui/layout/navbar";
 
 export default function Home() {
   const [open, setOpen] = useState(false);
@@ -167,6 +168,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col gap-4 items-center min-h-dvh w-full p-md">
+      <Navbar />
       <main className="flex flex-col gap-4 w-full">
         {open && (
           <Alert {...alertParams.props}>

@@ -153,34 +153,35 @@
   --background: var(--Crust);
   --foreground: var(--Text);
   --card: var(--Mantle);
-  --card-foreground: var(--Text);
+  --card-foreground: var(--foreground);
   --popover: var(--Mantle);
-  --popover-foreground: var(--Text);
+  --popover-foreground: var(--foreground);
   --primary: var(--Sky);
-  --primary-foreground: var(--Text);
+  --primary-foreground: var(--background);
   --secondary: var(--Pink);
-  --secondary-foreground: var(--Text);
+  --secondary-foreground: var(--background);
   --muted: var(--Surface0);
-  --muted-foreground: var(--Text);
+  --muted-foreground: var(--Overlay0);
   --accent: var(--Yellow);
-  --accent-foreground: var(--Text);
+  --accent-foreground: var(--background);
+  --outline-foreground: var(--foreground);
   --destructive: var(--Red);
   --border: var(--Surface1);
   --input: var(--Surface1);
-  --ring: var(--Text);
+  --ring: var(--foreground);
   --chart-1: var(--Blue);
   --chart-2: var(--Green);
   --chart-3: var(--Maroon);
   --chart-4: var(--Rosewater);
   --chart-5: var(--Mauve);
   --sidebar: var(--Mantle);
-  --sidebar-foreground: var(--Text);
+  --sidebar-foreground: var(--foreground);
   --sidebar-primary: var(--Sky);
-  --sidebar-primary-foreground: var(--Text);
+  --sidebar-primary-foreground: var(--background);
   --sidebar-accent: var(--Yellow);
-  --sidebar-accent-foreground: var(--Text);
+  --sidebar-accent-foreground: var(--background);
   --sidebar-border: var(--Surface1);
-  --sidebar-ring: var(--Text);
+  --sidebar-ring: var(--foreground);
 }
 
 @custom-variant light (&:where(.light, .light *));
@@ -212,6 +213,39 @@
   --Base: hsl(220 23% 95%);
   --Mantle: hsl(220 22% 92%);
   --Crust: hsl(220 21% 89%);
+
+  --background: var(--Crust);
+  --foreground: var(--Text);
+  --card: var(--Mantle);
+  --card-foreground: var(--foreground);
+  --popover: var(--Mantle);
+  --popover-foreground: var(--foreground);
+  --primary: var(--Sky);
+  --primary-foreground: var(--background);
+  --secondary: var(--Pink);
+  --secondary-foreground: var(--background);
+  --muted: var(--Surface0);
+  --muted-foreground: var(--Overlay0);
+  --accent: var(--Yellow);
+  --accent-foreground: var(--foreground);
+  --outline-foreground: var(--background);
+  --destructive: var(--Red);
+  --border: var(--Surface1);
+  --input: var(--Surface1);
+  --ring: var(--foreground);
+  --chart-1: var(--Blue);
+  --chart-2: var(--Green);
+  --chart-3: var(--Maroon);
+  --chart-4: var(--Rosewater);
+  --chart-5: var(--Mauve);
+  --sidebar: var(--Mantle);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--Sky);
+  --sidebar-primary-foreground: var(--foreground);
+  --sidebar-accent: var(--Yellow);
+  --sidebar-accent-foreground: var(--foreground);
+  --sidebar-border: var(--Surface1);
+  --sidebar-ring: var(--foreground);
 }
 
 @layer base {

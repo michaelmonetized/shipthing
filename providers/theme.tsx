@@ -37,11 +37,11 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
 
   return (
     <ThemeContext.Provider value={{ isLight, toggleTheme }}>
-      <div className={isLight ? "light" : ""}>
+      <body id="top" className={isLight ? "light" : ""}>
         {children}
         <Button
           onClick={toggleTheme}
-          className="fixed bottom-4 right-4 cursor-pointer"
+          className="fixed bottom-xs right-5xl m-md cursor-pointer"
         >
           <span className="sr-only">Toggle Theme</span>
           {isLight ? (
@@ -50,7 +50,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
             <MoonIcon className="w-4 h-4" />
           )}
         </Button>
-      </div>
+      </body>
     </ThemeContext.Provider>
   );
 };

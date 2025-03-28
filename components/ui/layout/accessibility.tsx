@@ -1,4 +1,4 @@
-import { Button } from "../button";
+import { Button } from "@/components/ui/button";
 import { PiCaretUpLight } from "react-icons/pi";
 
 export function AccessibilityWrapper({
@@ -15,7 +15,7 @@ export function AccessibilityWrapper({
       <Button
         asChild
         variant="secondary"
-        className="fixed bottom-md right-md m-md text-Crust"
+        className="fixed bottom-xs right-xs m-md text-Crust"
       >
         <a href="#top" title="Back to top">
           <span className="sr-only focus:not-sr-only">Back to top</span>
