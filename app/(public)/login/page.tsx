@@ -1,5 +1,7 @@
 import { Link } from "@/components/link";
 import { Button } from "@/components/ui/button";
+import Box from "@/components/ui/layout/box";
+import { Deck } from "@/components/ui/layout/deck";
 import {
   SignedIn,
   SignedOut,
@@ -28,11 +30,14 @@ export default function LoginPage() {
             },
           }}
         />
-        <div className="m-md p-md flex gap-md items-center justify-end content-center w-full md:max-w-[1170px]">
+        <Box
+          className="p-0 m-0 items-center justify-end content-end *:block"
+          variant="row"
+        >
           <Button asChild variant="secondary">
             <Link href="/">Home</Link>
           </Button>
-        </div>
+        </Box>
       </SignedOut>
       <SignedIn>
         <UserProfile
@@ -46,14 +51,14 @@ export default function LoginPage() {
             },
           }}
         />
-        <div className="flex gap-md items-center justify-between content-between w-full md:max-w-[880px]">
+        <Deck className="items-center justify-between content-between *:block">
           <Button asChild variant="secondary">
             <Link href="/">Home</Link>
           </Button>
           <Button asChild variant="outline">
             <SignOutButton />
           </Button>
-        </div>
+        </Deck>
       </SignedIn>
     </main>
   );
