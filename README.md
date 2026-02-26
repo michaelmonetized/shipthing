@@ -45,3 +45,14 @@ cp env.template .env.local
 
 Required variables are documented in `env.template`.
 
+
+## Guardrail
+
+This repo enforces Next.js 16+ middleware naming by expecting `proxy.ts` (and no `middleware.ts`).
+
+Run:
+
+```bash
+bun run check:proxy
+```
+
