@@ -45,3 +45,8 @@ cp env.template .env.local
 
 Required variables are documented in `env.template`.
 
+
+## Next.js 16 middleware note
+
+This project uses `proxy.ts` (not `middleware.ts`) for request middleware, per Next.js 16+ conventions.
+
