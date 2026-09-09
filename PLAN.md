@@ -14,7 +14,8 @@ Carrier rate comparison and label generation remain a **future product aspiratio
 - ✅ Convex schema + `contacts` table / CRUD (`convex/schema.ts`, `convex/contacts.ts`)
 - ✅ Resend email API routes (`app/api/send/...`)
 - ✅ Public login surface + app shell
-- ✅ Sentry / PostHog / Stripe deps present in package.json (integration depth varies)
+- ✅ Sentry / PostHog deps present in package.json (integration depth varies)
+- ⬜ Stripe payments — **planned only**; no keys/env and no checkout/webhook code at HEAD
 
 ### Not started (carrier product)
 - ⬜ USPS / UPS / FedEx / DHL carrier APIs
@@ -50,3 +51,10 @@ Do **not** treat unchecked carrier items below as “in progress at HEAD.”
 - Active users / labels printed / savings vs retail — TBD once carrier path ships
 
 *PLAN parity sync: 2026-09-08 — PLAN now matches contacts spine; carrier APIs explicitly future.*
+
+
+## Phase C — Stripe payments (planned; not wired)
+
+Stripe is **not** integrated at HEAD. There are no `STRIPE_*` env vars in `env.template`, no checkout routes, and no webhook handlers.
+
+Do **not** claim billing/subscriptions are live. Wire only after real Stripe keys exist in env — never invent keys.
