@@ -56,3 +56,10 @@ Run:
 bun run check:proxy
 ```
 
+
+
+## Honest status (payments / shipping)
+
+- **Contacts CRM spine** (Clerk + Convex + Resend) is the shipped focus.
+- **Carrier rate / label product** is planned, not live.
+- **Stripe billing** is planned only — dependency removed until keys exist and checkout is wired. Do not invent Stripe keys.
