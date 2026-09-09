@@ -2,97 +2,51 @@
 
 ## Project Overview
 
-ShipThing is a shipping rate comparison and label generation platform that helps e-commerce sellers find the best shipping rates across carriers and print labels efficiently.
+**HEAD reality:** ShipThing is a Next.js 16 app with a **contacts CRM spine** (Clerk + Convex + Resend) and a `proxy.ts` Next 16 auth guardrail. It is **not** yet a carrier rate / label product.
 
-## Current State
+Carrier rate comparison and label generation remain a **future product aspiration**, not the shipped stack.
 
-### Completed
-- ✅ Project structure exists
-- ✅ Package.json configured
+## Current State (aligned to HEAD)
 
-### Not Started
-- ⬜ Carrier API integrations
+### Shipped / present
+- ✅ Next.js 16 app router + `proxy.ts` (no legacy `middleware.ts`)
+- ✅ Clerk authentication (`@clerk/nextjs`)
+- ✅ Convex schema + `contacts` table / CRUD (`convex/schema.ts`, `convex/contacts.ts`)
+- ✅ Resend email API routes (`app/api/send/...`)
+- ✅ Public login surface + app shell
+- ✅ Sentry / PostHog / Stripe deps present in package.json (integration depth varies)
+
+### Not started (carrier product)
+- ⬜ USPS / UPS / FedEx / DHL carrier APIs
 - ⬜ Rate comparison engine
-- ⬜ Label generation
-- ⬜ User dashboard
-- ⬜ Order management
+- ⬜ Label generation (ZPL/PDF)
+- ⬜ Order import / batch labels / tracking unification
 
-## Phase 1: Core Platform (Weeks 1-4)
+## Phase A — Contacts spine (current focus)
 
-### Week 1-2: Foundation
-- [ ] Next.js 15 + Convex setup
-- [ ] Clerk authentication
-- [ ] User/business schema
-- [ ] Carrier credentials storage
+- [x] Next.js + Convex project scaffold
+- [x] Clerk auth guard via `proxy.ts`
+- [x] Contacts schema + mutations/queries
+- [x] Resend notification/confirmation routes
+- [ ] Richer contacts UI / admin beyond scaffold pages
+- [ ] Harden env docs (`.env.example` completeness)
 
-### Week 3-4: Rate Comparison
-- [ ] USPS API integration
-- [ ] UPS API integration
-- [ ] FedEx API integration
-- [ ] Rate comparison algorithm
+## Phase B — Carrier / shipping product (future; aspirational)
 
-## Success Metrics
+Only pursue after contacts spine is solid:
 
-- Active users > 500
-- Monthly labels printed > 10,000
-- Carrier savings vs. retail > 30%
+1. Carrier aggregator (EasyPost/Shippo) **or** direct USPS/UPS/FedEx
+2. Rate comparison
+3. Label generation + history
+4. Address validation + package presets
 
----
+Do **not** treat unchecked carrier items below as “in progress at HEAD.”
 
-## Improvement Opportunities (Updated 2025-01-08)
+### Deferred backlog (Not Started at HEAD)
+- Carrier APIs, rate comparison, label generation
+- Order import, batch labels, tracking, returns, insurance, multi-location
 
-### 🔴 Critical (MVP Features)
+## Success Metrics (when Phase B starts)
+- Active users / labels printed / savings vs retail — TBD once carrier path ships
 
-1. **Carrier APIs** - USPS, UPS, FedEx, DHL integrations
-
-2. **Rate Comparison** - Compare rates across all carriers
-
-3. **Label Generation** - Print shipping labels (ZPL/PDF)
-
-4. **Address Validation** - Verify addresses before shipping
-
-5. **Package Dimensions** - Save common package sizes
-
-### 🟡 High Priority (User Value)
-
-6. **Order Import** - Pull orders from Shopify, WooCommerce, etc.
-
-7. **Batch Labels** - Print multiple labels at once
-
-8. **Tracking Integration** - Unified tracking across carriers
-
-9. **Rate Calculator** - Public rate calculator widget
-
-10. **Shipping Presets** - Save common shipping configurations
-
-11. **Label History** - Search and reprint past labels
-
-12. **Cost Analytics** - Spending by carrier, service, destination
-
-### 🟢 Nice to Have (Growth)
-
-13. **Returns Labels** - Generate return labels
-
-14. **Insurance** - Shipping insurance options
-
-15. **Pickup Scheduling** - Schedule carrier pickups
-
-16. **Multi-location** - Ship from multiple warehouses
-
-17. **API Access** - Developer API for integrations
-
-18. **White-label** - Branded shipping for agencies
-
-### 🔧 Technical Requirements
-
-19. **EasyPost/Shippo** - Consider aggregator APIs
-
-20. **Thermal Printer Support** - ZPL label format
-
-21. **Webhook Support** - Tracking updates
-
-22. **Rate Caching** - Cache rates for performance
-
-23. **Address Database** - Store customer addresses
-
-24. **Carrier Accounts** - Connect existing accounts
+*PLAN parity sync: 2026-09-08 — PLAN now matches contacts spine; carrier APIs explicitly future.*
